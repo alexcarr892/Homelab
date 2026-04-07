@@ -47,7 +47,7 @@ For family and friends, [Jellyseerr](https://github.com/fallenbagel/jellyseerr) 
 - carrmedia.net
 A simple landing page exposed publicly via Cloudflare Tunnel — no ports open on the router. It gives family and friends one place to find Jellyfin and Jellyseerr without having to remember local IPs or ports. The tunnel also handles HTTPS automatically which was a lot simpler than setting up certificates manually. ![carrmedia.net](images/carrmedia.png)
 
-Also running Ollama + Open WebUI for experimenting with local LLMs — pretty limited by the 1050 Ti with 4gb of ram but good enough for smaller models. Currently trying out gemma4:e2b
+Also running Ollama + Open WebUI for experimenting with local LLMs — pretty limited by the 1050 Ti with 4gb of ram but good enough for smaller models. Currently trying out gemma4:e2b ![openwebui](images/OpWebUi.png)
 
   Networking Lab:
   Using [Containerlab](https://containerlab.dev) with Arista cEOS images to build out a VXLAN/EVPN fabric — working through BGP EVPN control plane setup, VTEP config, and overlay networking. Mostly for my capstone but also interesting to     work with other devices besides the cisco IOS that I'm used to
