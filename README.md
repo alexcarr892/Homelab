@@ -45,7 +45,7 @@ For family and friends, [Jellyseerr](https://github.com/fallenbagel/jellyseerr) 
 [Pi-hole](https://pi-hole.net) handles DNS and ad blocking for the whole network at `10.0.0.231`.
 
 - carrmedia.net
-A simple landing page exposed publicly via Cloudflare Tunnel — no ports open on the router. It gives family and friends one place to find Jellyfin and Jellyseerr without having to remember local IPs or ports. The tunnel also handles HTTPS automatically which was a lot simpler than setting up certificates manually.
+A simple landing page exposed publicly via Cloudflare Tunnel — no ports open on the router. It gives family and friends one place to find Jellyfin and Jellyseerr without having to remember local IPs or ports. The tunnel also handles HTTPS automatically which was a lot simpler than setting up certificates manually. ![carrmedia.net](images/carrmedia.png)
 
 Also running Ollama + Open WebUI for experimenting with local LLMs — pretty limited by the 1050 Ti with 4gb of ram but good enough for smaller models. Currently trying out gemma4:e2b
 
