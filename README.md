@@ -27,7 +27,7 @@ Game servers are managed through [AMP](https://cubecoders.com/AMP), running via 
 | CS2 | Operational |
 | Terraria (modded) | Operational |
 
-A few things that tripped me up during setup: had to use the local IP of the VM within each server instead of the loopback address. CS2 also refused to load because I hadn't allocated enough storage to the VM initially.
+A few things that tripped me up during setup: had to use the local IP of the VM within each server instead of the loopback address. CS2 also refused to load because I hadn't allocated enough storage to the VM initially. ![AMP](images/amp.png)
 
 ---
 
