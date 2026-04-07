@@ -1,0 +1,41 @@
+services:
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    volumes:
+      - ./ollama:/root/.ollama
+    ports:
+      - 11434:11434
+    restart: unless-stopped
+
+  openwebui:
+    image: ghcr.io/open-webui/open-webui:latest
+    container_name: openwebui
+    depends_on:
+      - ollama
+      - copilot-tools
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+    volumes:
+      - ./openwebui:/app/backend/data
+    ports:
+      - 3000:8080
+    restart: unless-stopped
+
+  # Custom tool server — exposes Docker, proc, and storage info to Open WebUI for monitoring stats on my server
+  copilot-tools:
+    build:
+      context: ./tools
+    container_name: copilot-tools
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc:/host/proc:ro
+      - /mnt/storage:/mnt/storage:ro
+    ports:
+      - 8000:8000
+    restart: unless-stopped
