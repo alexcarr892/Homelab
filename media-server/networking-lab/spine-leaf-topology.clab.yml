@@ -1,0 +1,88 @@
+name: spine-leaf-fabric
+prefix: ""
+
+mgmt:
+  network: mgmt
+  external-access: true
+  ipv4-subnet: 10.255.20.0/24
+
+topology:
+  defaults:
+    env:
+      INTFTYPE: et
+
+  kinds:
+    ceos:
+      image: ceos:4.35.1F
+
+  nodes:
+    spine1: { kind: ceos, mgmt-ipv4: 10.255.20.11, startup-config: configs/spine1.cfg }
+    spine2: { kind: ceos, mgmt-ipv4: 10.255.20.12, startup-config: configs/spine2.cfg }
+    spine3: { kind: ceos, mgmt-ipv4: 10.255.20.13, startup-config: configs/spine3.cfg }
+
+    leaf1: { kind: ceos, mgmt-ipv4: 10.255.20.21, startup-config: configs/leaf1.cfg }
+    leaf2: { kind: ceos, mgmt-ipv4: 10.255.20.22, startup-config: configs/leaf2.cfg }
+    leaf3: { kind: ceos, mgmt-ipv4: 10.255.20.23, startup-config: configs/leaf3.cfg }
+    leaf4: { kind: ceos, mgmt-ipv4: 10.255.20.24, startup-config: configs/leaf4.cfg }
+
+    borderleaf1: { kind: ceos, mgmt-ipv4: 10.255.20.31, startup-config: configs/borderleaf1.cfg }
+    borderleaf2: { kind: ceos, mgmt-ipv4: 10.255.20.32, startup-config: configs/borderleaf2.cfg }
+
+    host1: { kind: ceos, mgmt-ipv4: 10.255.20.101, startup-config: configs/host1.cfg }
+    host2: { kind: ceos, mgmt-ipv4: 10.255.20.102, startup-config: configs/host2.cfg }
+    firewall: { kind: ceos, mgmt-ipv4: 10.255.20.103, startup-config: configs/firewall.cfg }
+
+  links:
+    # ---------------- Spines to Leaf/BorderLeaf fabric (full-mesh) ----------------
+    # spine1 downlinks (et2-7)
+    - endpoints: ["spine1:et2", "leaf1:et1"]
+    - endpoints: ["spine1:et3", "leaf2:et1"]
+    - endpoints: ["spine1:et4", "leaf3:et1"]
+    - endpoints: ["spine1:et5", "leaf4:et1"]
+    - endpoints: ["spine1:et6", "borderleaf1:et1"]
+    - endpoints: ["spine1:et7", "borderleaf2:et1"]
+
+    # spine2 downlinks (et2-7)
+    - endpoints: ["spine2:et2", "leaf1:et2"]
+    - endpoints: ["spine2:et3", "leaf2:et2"]
+    - endpoints: ["spine2:et4", "leaf3:et2"]
+    - endpoints: ["spine2:et5", "leaf4:et2"]
+    - endpoints: ["spine2:et6", "borderleaf1:et2"]
+    - endpoints: ["spine2:et7", "borderleaf2:et2"]
+
+    # spine3 downlinks (et1-6)
+    - endpoints: ["spine3:et1", "leaf1:et3"]
+    - endpoints: ["spine3:et2", "leaf2:et3"]
+    - endpoints: ["spine3:et3", "leaf3:et3"]
+    - endpoints: ["spine3:et4", "leaf4:et3"]
+    - endpoints: ["spine3:et5", "borderleaf1:et3"]
+    - endpoints: ["spine3:et6", "borderleaf2:et3"]
+
+    # ---------------- Dual peer-links (MLAG peer + peer-link) ----------------
+    - endpoints: ["leaf1:et4", "leaf2:et4"]
+    - endpoints: ["leaf1:et5", "leaf2:et5"]
+
+    - endpoints: ["leaf3:et4", "leaf4:et4"]
+    - endpoints: ["leaf3:et5", "leaf4:et5"]
+
+    - endpoints: ["borderleaf1:et4", "borderleaf2:et4"]
+    - endpoints: ["borderleaf1:et5", "borderleaf2:et5"]
+
+    # ---------------- Hosts: redundant links to leaf pairs (NO borderleaf links) ----------------
+    # host1 has 4 total: 2 to leaf1, 2 to leaf2
+    - endpoints: ["leaf1:et6", "host1:et1"]
+    - endpoints: ["leaf1:et7", "host1:et3"]
+    - endpoints: ["leaf2:et6", "host1:et2"]
+    - endpoints: ["leaf2:et7", "host1:et4"]
+
+    # host2 has 4 total: 2 to leaf3, 2 to leaf4
+    - endpoints: ["leaf3:et6", "host2:et1"]
+    - endpoints: ["leaf3:et7", "host2:et3"]
+    - endpoints: ["leaf4:et6", "host2:et2"]
+    - endpoints: ["leaf4:et7", "host2:et4"]
+
+    # ---------------- Firewall: redundant links to borderleaf pair ----------------
+    - endpoints: ["borderleaf1:et6", "firewall:et1"]
+    - endpoints: ["borderleaf1:et7", "firewall:et3"]
+    - endpoints: ["borderleaf2:et6", "firewall:et2"]
+    - endpoints: ["borderleaf2:et7", "firewall:et4"]
